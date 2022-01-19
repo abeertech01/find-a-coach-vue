@@ -6,13 +6,35 @@
         <li>
           <RouterLink to="/coaches">All Coaches</RouterLink>
         </li>
-        <li>
+        <li v-if="isLoggedIn">
           <RouterLink to="/requests">Requests</RouterLink>
+        </li>
+        <li v-else>
+          <router-link to="/auth">Login</router-link>
+        </li>
+        <li v-if="isLoggedIn">
+          <base-button @click="logout">Logout</base-button>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script>
+export default {
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+      this.$route.replace("/coaches");
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 header {
